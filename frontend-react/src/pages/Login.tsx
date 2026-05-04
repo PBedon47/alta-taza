@@ -1,83 +1,80 @@
-import {
-Link,
-useNavigate
-} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { FaCoffee } from "react-icons/fa";
+import { useState } from "react";
 
-import {
-FaCoffee
-} from "react-icons/fa";
 
-function Login(){
+function Login() {
 
-const navigate = useNavigate();
+    const navigate = useNavigate();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
-const handleLogin = ()=>{
+    const handleLogin = () => {
 
-navigate("/");
+    const storedUser = JSON.parse(localStorage.getItem("user") || "null");
 
-};
+    if (!storedUser) {
+        alert("No existe usuario, regístrate primero");
+        return;
+    }
 
-return(
+    if (storedUser.email === email && storedUser.password === password) {
 
-<div className="auth-container">
+        // guardar sesión
+        localStorage.setItem("user", JSON.stringify(storedUser));
+        localStorage.setItem("usuarioNombre", storedUser.nombre);
 
-<form className="auth-form">
+        // avisar al navbar
+        window.dispatchEvent(new Event("userChanged"));
 
-<div className="auth-logo">
+        navigate("/");
 
-<FaCoffee />
+    } else {
+        alert("Datos incorrectos");
+    }
+    };
 
-</div>
+  return (
+    <div className="auth-container">
 
-<h2>
-Bienvenido
-</h2>
+      <form className="auth-form">
 
-<p className="auth-subtitle">
+        <div className="auth-logo">
+          <FaCoffee />
+        </div>
 
-Inicia sesión para acceder
-a tus pedidos, historial
-y promociones exclusivas.
+        <h2>Bienvenido</h2>
 
-</p>
+        <p className="auth-subtitle">
+          Inicia sesión para continuar
+        </p>
 
-<input
-type="email"
-placeholder="Correo electrónico"
-/>
+        <input
+          type="email"
+          placeholder="Correo electrónico"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-<input
-type="password"
-placeholder="Contraseña"
-/>
+        <input
+          type="password"
+          placeholder="Contraseña"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
-<button
-type="button"
-onClick={handleLogin}
->
+        <button type="button" onClick={handleLogin}>
+          Iniciar sesión
+        </button>
 
-Iniciar sesión
+        <p className="auth-link">
+          ¿No tienes cuenta? <Link to="/register">Crear cuenta</Link>
+        </p>
 
-</button>
+      </form>
 
-<p className="auth-link">
-
-¿No tienes cuenta?{" "}
-
-<Link to="/register">
-
-Crear cuenta
-
-</Link>
-
-</p>
-
-</form>
-
-</div>
-
-)
-
+    </div>
+  );
 }
 
 export default Login;

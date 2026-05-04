@@ -1,111 +1,89 @@
 import {
-Routes,
-Route,
-Navigate,
-useNavigate
+  Routes,
+  Route,
+  Navigate,
+  useNavigate
 } from "react-router-dom";
 
 import {
-lazy,
-Suspense,
-useEffect
+  lazy,
+  Suspense,
+  useEffect
 } from "react";
+
+import Perfil from "./pages/Perfil";
 
 /* PÁGINAS */
 
-const Home = lazy(()=>
-import("./pages/Home")
+const Home = lazy(() =>
+  import("./pages/Home")
 );
 
-const Menu = lazy(()=>
-import("./pages/Menu")
+const Menu = lazy(() =>
+  import("./pages/Menu")
 );
 
-const Login = lazy(()=>
-import("./pages/Login")
+const Login = lazy(() =>
+  import("./pages/Login")
 );
 
-const Register = lazy(()=>
-import("./pages/Register")
+const Register = lazy(() =>
+  import("./pages/Register")
 );
 
-const Checkout = lazy(()=>
-import("./pages/Checkout")
+const Checkout = lazy(() =>
+  import("./pages/Checkout")
 );
 
-const Admin = lazy(()=>
-import("./pages/Admin")
+const Admin = lazy(() =>
+  import("./pages/Admin")
 );
 
-function App(){
+function App() {
 
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
-useEffect(()=>{
+  useEffect(() => {
 
-const navigationEntries =
-window.performance.getEntriesByType(
-"navigation"
-);
+    const navigationEntries =
+      window.performance.getEntriesByType("navigation");
 
-if(
-navigationEntries.length > 0 &&
-(navigationEntries[0] as PerformanceNavigationTiming)
-.type === "reload"
-){
-navigate("/");
-}
+    if (
+      navigationEntries.length > 0 &&
+      (navigationEntries[0] as PerformanceNavigationTiming).type === "reload"
+    ) {
+      navigate("/");
+    }
 
-},[]);
+  }, []);
 
-return(
+  return (
 
-<Suspense fallback={null}>
+    <Suspense fallback={<h2>Cargando...</h2>}>
 
-<Routes>
+      <Routes>
 
-<Route
-path="/"
-element={<Home />}
-/>
+        <Route path="/" element={<Home />} />
 
-<Route
-path="/menu"
-element={<Menu />}
-/>
+        <Route path="/menu" element={<Menu />} />
 
-<Route
-path="/login"
-element={<Login />}
-/>
+        <Route path="/login" element={<Login />} />
 
-<Route
-path="/register"
-element={<Register />}
-/>
+        <Route path="/register" element={<Register />} />
 
-<Route
-path="/checkout"
-element={<Checkout />}
-/>
+        <Route path="/checkout" element={<Checkout />} />
 
-<Route
-path="/admin"
-element={<Admin />}
-/>
+        <Route path="/admin" element={<Admin />} />
 
-{/* REDIRECCIÓN */}
-<Route
-path="*"
-element={<Navigate to="/" replace />}
-/>
+        <Route path="/perfil" element={<Perfil />} />
 
-</Routes>
+        <Route path="*" element={<Navigate to="/" replace />} />
 
-</Suspense>
+      </Routes>
 
-)
+    </Suspense>
 
+  );
 }
 
 export default App;

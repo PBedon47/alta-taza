@@ -1,88 +1,83 @@
-import {
-Link,
-useNavigate
-} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { FaCoffee } from "react-icons/fa";
+import { useState } from "react";
 
-import {
-FaCoffee
-} from "react-icons/fa";
+function Register() {
 
-function Register(){
+  const navigate = useNavigate();
 
-const navigate = useNavigate();
+  const [nombre, setNombre] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-const handleRegister = ()=>{
+  const handleRegister = () => {
 
-navigate("/");
+    const user = {
+      nombre,
+      email,
+      password
+    };
 
-};
+    // guardar usuario
+    localStorage.setItem("user", JSON.stringify(user));
 
-return(
+    localStorage.setItem("usuarioNombre", nombre);
 
-<div className="auth-container">
+    // notificar al navbar
+    window.dispatchEvent(new Event("userChanged"));
 
-<form className="auth-form">
+    // redirigir
+    navigate("/");
+  };
 
-<div className="auth-logo">
+  return (
+    <div className="auth-container">
 
-<FaCoffee />
+      <form className="auth-form">
 
-</div>
+        <div className="auth-logo">
+          <FaCoffee />
+        </div>
 
-<h2>
-Crear cuenta
-</h2>
+        <h2>Crear cuenta</h2>
 
-<p className="auth-subtitle">
+        <p className="auth-subtitle">
+          Regístrate para guardar tus pedidos
+        </p>
 
-Regístrate para guardar
-tus pedidos y obtener
-beneficios exclusivos.
+        <input
+          type="text"
+          placeholder="Nombre completo"
+          value={nombre}
+          onChange={(e) => setNombre(e.target.value)}
+        />
 
-</p>
+        <input
+          type="email"
+          placeholder="Correo electrónico"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-<input
-type="text"
-placeholder="Nombre completo"
-/>
+        <input
+          type="password"
+          placeholder="Contraseña"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
-<input
-type="email"
-placeholder="Correo electrónico"
-/>
+        <button type="button" onClick={handleRegister}>
+          Registrarme
+        </button>
 
-<input
-type="password"
-placeholder="Contraseña"
-/>
+        <p className="auth-link">
+          ¿Ya tienes cuenta? <Link to="/login">Iniciar sesión</Link>
+        </p>
 
-<button
-type="button"
-onClick={handleRegister}
->
+      </form>
 
-Registrarme
-
-</button>
-
-<p className="auth-link">
-
-¿Ya tienes cuenta?{" "}
-
-<Link to="/login">
-
-Iniciar sesión
-
-</Link>
-
-</p>
-
-</form>
-
-</div>
-
-)
-
+    </div>
+  );
 }
 
 export default Register;
