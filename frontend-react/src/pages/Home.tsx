@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
@@ -9,86 +9,99 @@ import WelcomeCard from "../components/WelcomeCard";
 
 import featuredProducts from "../data/featuredProducts";
 
-import {
-useCart
-} from "../context/CartContext";
+import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 
 function Home(){
 
-const [openCart,setOpenCart] = useState(false);
-const [showWelcome,setShowWelcome] = useState(true);
+  // 🔥 estados
+  const [openCart,setOpenCart] = useState(false);
+  const [showWelcome,setShowWelcome] = useState(false);
 
-const {
-cart,
-addToCart,
-removeFromCart,
-removeAllFromCart
-} = useCart();
+  // 🔥 contextos
+  const { user } = useAuth();
 
-return(
+  const {
+    cart,
+    addToCart,
+    removeFromCart,
+    removeAllFromCart
+  } = useCart();
 
-<>
+  // 🔥 lógica del modal
+  useEffect(() => {
 
-<Navbar
-cantidad={cart.length}
-onOpenCart={()=> setOpenCart(true)}
-/>
+    const closed = localStorage.getItem("welcomeClosed");
 
-{showWelcome && (
+    if (!user && !closed) {
+      setShowWelcome(true);
+    } else {
+      setShowWelcome(false);
+    }
 
-<WelcomeCard
-onClose={()=> setShowWelcome(false)}
-/>
+  }, [user]);
 
-)}
+  return(
 
-<Hero />
+    <>
 
-<section className="menu">
+      <Navbar
+        cantidad={cart.length}
+        onOpenCart={()=> setOpenCart(true)}
+      />
 
-<h2>Especialidades</h2>
+      {showWelcome && (
 
-<div className="grid">
+        <WelcomeCard
+          onClose={() => {
+            setShowWelcome(false);
+            localStorage.setItem("welcomeClosed", "true");
+          }}
+        />
 
-{featuredProducts.map((item)=>(
+      )}
 
-<ProductCard
-key={item.id}
-nombre={item.nombre}
-precio={item.precio}
-imagen={item.imagen}
-onAdd={()=> addToCart(item)}
-/>
+      <Hero />
 
-))}
+      <section className="menu">
 
-</div>
+        <h2>Especialidades</h2>
 
-</section>
+        <div className="grid">
 
-{openCart && (
+          {featuredProducts.map((item)=>(
 
-<Cart
+            <ProductCard
+              key={item.id}
+              nombre={item.nombre}
+              precio={item.precio}
+              imagen={item.imagen}
+              onAdd={()=> addToCart(item)}
+            />
 
-cart={cart}
+          ))}
 
-onClose={()=> setOpenCart(false)}
+        </div>
 
-onAdd={(item)=> addToCart(item)}
+      </section>
 
-onRemove={(id)=> removeFromCart(id)}
+      {openCart && (
 
-onDeleteAll={(id)=> removeAllFromCart(id)}
+        <Cart
+          cart={cart}
+          onClose={()=> setOpenCart(false)}
+          onAdd={(item)=> addToCart(item)}
+          onRemove={(id)=> removeFromCart(id)}
+          onDeleteAll={(id)=> removeAllFromCart(id)}
+        />
 
-/>
+      )}
 
-)}
+      <Footer />
 
-<Footer />
+    </>
 
-</>
-
-)
+  )
 
 }
 

@@ -5,39 +5,15 @@ import {
   useNavigate
 } from "react-router-dom";
 
-import {
-  lazy,
-  Suspense,
-  useEffect
-} from "react";
+import { useEffect } from "react";
 
+import Home from "./pages/Home";
+import Menu from "./pages/Menu";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Checkout from "./pages/Checkout";
+import Admin from "./pages/Admin";
 import Perfil from "./pages/Perfil";
-
-/* PÁGINAS */
-
-const Home = lazy(() =>
-  import("./pages/Home")
-);
-
-const Menu = lazy(() =>
-  import("./pages/Menu")
-);
-
-const Login = lazy(() =>
-  import("./pages/Login")
-);
-
-const Register = lazy(() =>
-  import("./pages/Register")
-);
-
-const Checkout = lazy(() =>
-  import("./pages/Checkout")
-);
-
-const Admin = lazy(() =>
-  import("./pages/Admin")
-);
 
 function App() {
 
@@ -59,29 +35,19 @@ function App() {
 
   return (
 
-    <Suspense fallback={<h2>Cargando...</h2>}>
+    <Routes>
 
-      <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/menu" element={<Menu />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/checkout" element={<Checkout />} />
+      <Route path="/admin" element={<Admin />} />
+      <Route path="/perfil" element={<Perfil />} />
 
-        <Route path="/" element={<Home />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
 
-        <Route path="/menu" element={<Menu />} />
-
-        <Route path="/login" element={<Login />} />
-
-        <Route path="/register" element={<Register />} />
-
-        <Route path="/checkout" element={<Checkout />} />
-
-        <Route path="/admin" element={<Admin />} />
-
-        <Route path="/perfil" element={<Perfil />} />
-
-        <Route path="*" element={<Navigate to="/" replace />} />
-
-      </Routes>
-
-    </Suspense>
+    </Routes>
 
   );
 }
