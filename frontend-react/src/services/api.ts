@@ -1,6 +1,30 @@
 const API_URL = "http://localhost:3000/api";
 
 /* =========================
+   AUTH
+========================= */
+
+export const loginUser = async (data: { email: string; password: string }) => {
+  const res = await fetch(`${API_URL}/auth/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  });
+
+  return res.json();
+};
+
+export const registerUser = async (data: { nombre: string; email: string; password: string }) => {
+  const res = await fetch(`${API_URL}/auth/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  });
+
+  return res.json();
+};
+
+/* =========================
    PRODUCTS
 ========================= */
 
@@ -10,27 +34,17 @@ export const getProducts = async () => {
 };
 
 /* =========================
-   AUTH
+   ORDERS
 ========================= */
 
-export const loginUser = async (data: any) => {
-  const res = await fetch(`${API_URL}/auth/login`, {
+export const createOrder = async (data: {
+  user_id: number;
+  total: number;
+  items: any[];
+}) => {
+  const res = await fetch(`${API_URL}/orders`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  });
-
-  return res.json();
-};
-
-export const registerUser = async (data: any) => {
-  const res = await fetch(`${API_URL}/auth/register`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data)
   });
 

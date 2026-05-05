@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { FaCoffee } from "react-icons/fa";
 import { useState } from "react";
+import { registerUser } from "../services/api";
 
 function Register() {
 
@@ -10,25 +11,24 @@ function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleRegister = () => {
-
-    const user = {
-      nombre,
-      email,
-      password
-    };
-
     // guardar usuario
-    localStorage.setItem("user", JSON.stringify(user));
 
-    localStorage.setItem("usuarioNombre", nombre);
+      const handleRegister = async () => {
+      const res = await registerUser({
+        nombre,
+        email,
+        password
+      });
 
-    // notificar al navbar
-    window.dispatchEvent(new Event("userChanged"));
+      if (!res.id) {
+        alert("Error al registrar usuario");
+        return;
+      }
 
-    // redirigir
-    navigate("/");
-  };
+      alert("Usuario creado correctamente");
+
+      navigate("/login");
+    };
 
   return (
     <div className="auth-container">

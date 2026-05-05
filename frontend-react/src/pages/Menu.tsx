@@ -1,41 +1,37 @@
-import { useState }
-from "react";
-
-import Navbar
-from "../components/Navbar";
-
-import ProductCard
-from "../components/ProductCard";
-
-import Footer
-from "../components/Footer";
-
-import Cart
-from "../components/Cart";
-
-import products
-from "../data/products";
-
-import {
-useCart
-} from "../context/CartContext";
+import { useEffect, useState } from "react";
+import Navbar from "../components/Navbar";
+import ProductCard from "../components/ProductCard";
+import Footer from "../components/Footer";
+import Cart from "../components/Cart";
+import { getProducts } from "../services/api";
+import {useCart} from "../context/CartContext";
+import type { Product } from "../types/product";
 
 /* ICONOS */
 
-import {
-FaCoffee,
-FaSnowflake,
-FaBirthdayCake,
-FaHamburger,
-FaLeaf,
-FaGlassWhiskey
-}
-from "react-icons/fa";
+import {FaCoffee, FaSnowflake, FaBirthdayCake, FaHamburger, FaLeaf, FaGlassWhiskey} from "react-icons/fa";
 
 function Menu(){
 
-const [openCart,setOpenCart]
-= useState(false);
+const [products, setProducts] = useState<Product[]>([]);
+const [loading, setLoading] = useState(true);
+
+useEffect(() => {
+  const load = async () => {
+    const data = await getProducts();
+    setProducts(data || []);
+    setLoading(false);
+    
+  };
+
+  load();
+}, []);
+
+    if (loading) {
+      return <div className="loading">Cargando productos...</div>;
+    }
+
+const [openCart,setOpenCart] = useState(false);
 
 const {
 cart,
@@ -118,7 +114,7 @@ Cafés Calientes
 key={item.id}
 nombre={item.nombre}
 precio={item.precio}
-imagen={item.imagen}
+imagen={item.imagen ?? "/default-product.jpg"}
 onAdd={()=>
 addToCart(item)}
 />
@@ -149,7 +145,7 @@ Cafés Fríos
 key={item.id}
 nombre={item.nombre}
 precio={item.precio}
-imagen={item.imagen}
+imagen={item.imagen ?? "/default-product.jpg"}
 onAdd={()=>
 addToCart(item)}
 />
@@ -180,7 +176,7 @@ Tés
 key={item.id}
 nombre={item.nombre}
 precio={item.precio}
-imagen={item.imagen}
+imagen={item.imagen ?? "/default-product.jpg"}
 onAdd={()=>
 addToCart(item)}
 />
@@ -211,7 +207,7 @@ Bebidas y Jugos
 key={item.id}
 nombre={item.nombre}
 precio={item.precio}
-imagen={item.imagen}
+imagen={item.imagen ?? "/default-product.jpg"}
 onAdd={()=>
 addToCart(item)}
 />
@@ -242,7 +238,7 @@ Postres
 key={item.id}
 nombre={item.nombre}
 precio={item.precio}
-imagen={item.imagen}
+imagen={item.imagen ?? "/default-product.jpg"}
 onAdd={()=>
 addToCart(item)}
 />
@@ -273,7 +269,7 @@ Brunch & Sánguches
 key={item.id}
 nombre={item.nombre}
 precio={item.precio}
-imagen={item.imagen}
+imagen={item.imagen ?? "/default-product.jpg"}
 onAdd={()=>
 addToCart(item)}
 />

@@ -2,16 +2,40 @@ import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { createOrder } from "../services/api";
 
 function Checkout() {
 
-  const {
-    cart,
-    subtotal
-  } = useCart();
-
+  const {cart, subtotal} = useCart();
   const { user } = useAuth();
   const navigate = useNavigate();
+
+ const handlePay = async () => {
+
+  if (!user) {
+    navigate("/login");
+    return;
+  }
+
+  if (cart.length === 0) {
+    alert("Carrito vacío");
+    return;
+  }
+
+  const currentUser = user;
+
+  const order = {
+    user_id: currentUser.id,
+    total: subtotal,
+    items: cart
+  };
+
+  const res = await createOrder(order);
+
+  if (res.id) {
+    alert("Compra realizada con éxito");
+  }
+};
 
   // 🔐 PROTEGER RUTA
   useEffect(() => {
@@ -61,7 +85,7 @@ function Checkout() {
 
             <h1>S/ {subtotal}</h1>
 
-            <button className="pay-btn">
+            <button className="pay-btn" onClick={handlePay}>
               Pagar ahora
             </button>
 

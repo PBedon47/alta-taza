@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaCoffee } from "react-icons/fa";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { loginUser } from "../services/api";
 
 function Login() {
 
@@ -10,26 +11,21 @@ function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
+    const res = await loginUser({ email, password });
 
-    const storedUser = JSON.parse(localStorage.getItem("user") || "null");
-
-    if (!storedUser) {
-        alert("No existe usuario, regístrate primero");
-        return;
+    if (!res.token) {
+      alert("Credenciales incorrectas");
+      return;
     }
 
-    if (storedUser.email === email && storedUser.password === password) {
+    login(res.user);
 
-        login(storedUser);
+    localStorage.setItem("token", res.token);
+    localStorage.setItem("user", JSON.stringify(res.user));
 
-        navigate("/");
-
-    } else {
-        alert("Datos incorrectos");
-    }
-    };
-
+    navigate("/");
+  };
   return (
     <div className="auth-container">
 
