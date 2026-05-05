@@ -1,49 +1,90 @@
-import { useCart }
-from "../context/CartContext";
+import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
-function Checkout(){
+function Checkout() {
 
-const {
-cart,
-subtotal
-}
-= useCart();
+  const {
+    cart,
+    subtotal
+  } = useCart();
 
-return(
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
-<div className="checkout">
+  // 🔐 PROTEGER RUTA
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
+  }, [user, navigate]);
 
-<h1>Checkout</h1>
+  return (
 
-{cart.map((item,index)=>(
+    <div className="checkout-container">
 
-<div
-key={index}
-className="checkout-item"
->
+      <h1 className="checkout-title">
+        Resumen de tu pedido
+      </h1>
 
-<h3>{item.nombre}</h3>
+      <div className="checkout-grid">
 
-<p>S/ {item.precio}</p>
+        {/* 🛒 LISTA */}
+        <div className="checkout-left">
 
-</div>
+          {cart.map((item) => (
 
-))}
+            <div key={item.id} className="checkout-item">
 
-<hr />
+              <div>
+                <h3>{item.nombre}</h3>
+                <p>S/ {item.precio} x {item.quantity}</p>
+              </div>
 
-<h2>
-Total: S/ {subtotal}
-</h2>
+              <div>
+                <p>S/ {item.precio * item.quantity}</p>
+              </div>
 
-<button className="checkout-btn">
-Pagar
-</button>
+            </div>
 
-</div>
+          ))}
 
-)
+        </div>
 
+        {/* 💳 RESUMEN */}
+        <div className="checkout-right">
+
+          <div className="checkout-card">
+
+            <h2>Total a pagar</h2>
+
+            <h1>S/ {subtotal}</h1>
+
+            <button className="pay-btn">
+              Pagar ahora
+            </button>
+
+          </div>
+
+          {/* 👤 SOLO NOMBRE */}
+          <div className="user-card">
+
+            <h3>Comprador</h3>
+
+            <p>
+              {user?.nombre}
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  );
 }
 
 export default Checkout;

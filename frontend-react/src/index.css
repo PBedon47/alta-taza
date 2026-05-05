@@ -1461,3 +1461,99 @@ cursor:pointer;
 font-weight:bold;
 margin-right:10px;
 }
+
+/*Checkout*/
+.checkout-container{
+  padding:40px;
+  background:#f6efe7;
+  min-height:100vh;
+}
+
+.checkout-title{
+  text-align:center;
+  margin-bottom:30px;
+}
+
+.checkout-grid{
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  gap:30px;
+}
+
+/* IZQUIERDA */
+.checkout-left{
+  background:white;
+  padding:20px;
+  border-radius:12px;
+}
+
+.checkout-item{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:15px;
+  padding-bottom:10px;
+  border-bottom:1px solid #ddd;
+}
+
+/* DERECHA */
+.checkout-right{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+
+.checkout-card{
+  background:#2f1e16;
+  color:white;
+  padding:25px;
+  border-radius:12px;
+  text-align:center;
+}
+
+.checkout-card h1{
+  margin:15px 0;
+}
+
+.pay-btn{
+  width:100%;
+  padding:12px;
+  border:none;
+  background:#d4a373;
+  color:white;
+  font-weight:bold;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.pay-btn:hover{
+  background:#b5835a;
+}
+
+/* USER */
+.user-card{
+  background:white;
+  padding:20px;
+  border-radius:12px;
+}
+
+.checkout-actions{
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+
+.trash-btn{
+  background:#c0392b;
+  color:white;
+  border:none;
+  padding:8px;
+  border-radius:8px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.trash-btn:hover{
+  background:#6f2f25;
+}

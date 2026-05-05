@@ -22,7 +22,7 @@ cart:CartItem[];
 
 onClose:()=>void;
 
-onAdd:(item:CartItem)=>void;
+onAdd:(item:Omit<CartItem,"quantity">)=>void;
 
 onRemove:(id:number)=>void;
 
@@ -42,8 +42,8 @@ const navigate = useNavigate();
 
 /* 💰 TOTAL PRO */
 const subtotal = cart.reduce(
-(acc,item)=> acc + item.precio * item.quantity,
-0
+  (acc, item) => acc + item.precio * item.quantity,
+  0
 );
 
 return(
@@ -123,7 +123,14 @@ key={item.id}
 <span>{item.quantity}</span>
 
 {/* ➕ */}
-<button onClick={()=> onAdd(item)}>
+<button onClick={() => {
+  onAdd({
+    id: item.id,
+    nombre: item.nombre,
+    precio: item.precio,
+    categoria: item.categoria
+  });
+}}>
 <FaPlus />
 </button>
 
@@ -147,8 +154,11 @@ onClick={()=> onDeleteAll(item.id)}
 
 <h3>Total: S/ {subtotal}</h3>
 
-<button className="checkout-btn">
-Finalizar compra
+<button
+  className="checkout-btn"
+  onClick={() => navigate("/checkout")}
+>
+  Finalizar compra
 </button>
 
 <div className="mini-login-card">
