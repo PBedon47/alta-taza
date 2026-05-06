@@ -8,7 +8,7 @@ export const register = async (req, res) => {
   try {
     const hashed = await bcrypt.hash(password, 10);
     const result = await pool.query(
-      "INSERT INTO users (nombre, email, password) VALUES ($1, $2, $3) RETURNING *",
+      "INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING *",
       [nombre, email, hashed]
     );
     res.json(result.rows[0]);
@@ -25,6 +25,10 @@ export const login = async (req, res) => {
       "SELECT * FROM users WHERE email = $1",
       [email]
     );
+
+    console.log("Email buscado:", email);        // 👈
+    console.log("Usuario encontrado:", result.rows[0]); // 👈
+
     if (result.rows.length === 0)
       return res.status(400).json({ msg: "Usuario no existe" });
 
@@ -42,7 +46,7 @@ export const login = async (req, res) => {
 
     res.json({
       token,
-      user: { id: user.id, nombre: user.nombre, email: user.email }
+      user: { id: user.id, nombre: user.name, email: user.email }
     });
   } catch (err) {
     res.status(500).json(err.message);

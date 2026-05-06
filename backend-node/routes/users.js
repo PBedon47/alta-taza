@@ -1,14 +1,15 @@
-const express = require("express");
-const router = express.Router();
-const db = require("../db"); // ajusta según tu conexión
+import express from "express";
+import pool from "../config/db.js";
 
-// 👉 ACTUALIZAR welcome_seen
+const router = express.Router();
+
+// ACTUALIZAR welcome_seen
 router.patch("/:id/welcome", async (req, res) => {
   const { id } = req.params;
 
   try {
-    await db.query(
-      "UPDATE users SET welcome_seen = true WHERE id = ?",
+    await pool.query(
+      "UPDATE users SET welcome_seen = true WHERE id = $1",
       [id]
     );
 
@@ -20,4 +21,4 @@ router.patch("/:id/welcome", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

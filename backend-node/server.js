@@ -7,7 +7,7 @@ import "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
-import usersRoutes from "./routes/users.js"; 
+import usersRoutes from "./routes/users.js";
 
 dotenv.config();
 
@@ -25,8 +25,5 @@ app.use("/api/users", usersRoutes);
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log("Servidor corriendo en puerto", PORT);
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
-
-const usersRoutes = require("./routes/users");
-app.use("/api/users", usersRoutes);

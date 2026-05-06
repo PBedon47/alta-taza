@@ -13,12 +13,26 @@ function Register() {
 
     // guardar usuario
 
+     // const handleRegister = async () => {
+      //const res = await registerUser({
+      //  nombre,
+       // email,
+       // password
+      //});
+
       const handleRegister = async () => {
-      const res = await registerUser({
-        nombre,
-        email,
-        password
-      });
+  const res = await registerUser({
+    nombre,
+    email,
+    password
+  });
+
+  console.log("Respuesta del backend:", res); // 👈 esto
+
+  if (!res.id) {
+    alert("Error al registrar usuario");
+    return;
+  }
 
       if (!res.id) {
         alert("Error al registrar usuario");
