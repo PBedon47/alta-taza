@@ -1,7 +1,7 @@
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+
 import { createOrder } from "../services/api";
 
 function Checkout() {
@@ -37,12 +37,7 @@ function Checkout() {
   }
 };
 
-  // 🔐 PROTEGER RUTA
-  useEffect(() => {
-    if (!user) {
-      navigate("/login");
-    }
-  }, [user, navigate]);
+
 
   return (
 

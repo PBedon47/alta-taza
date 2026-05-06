@@ -3,9 +3,9 @@ import Navbar from "../components/Navbar";
 import ProductCard from "../components/ProductCard";
 import Footer from "../components/Footer";
 import Cart from "../components/Cart";
-import { getProducts } from "../services/api";
 import {useCart} from "../context/CartContext";
 import type { Product } from "../types/product";
+import productsData from "../data/products"; // ajusta ruta
 
 /* ICONOS */
 
@@ -14,22 +14,10 @@ import {FaCoffee, FaSnowflake, FaBirthdayCake, FaHamburger, FaLeaf, FaGlassWhisk
 function Menu(){
 
 const [products, setProducts] = useState<Product[]>([]);
-const [loading, setLoading] = useState(true);
 
 useEffect(() => {
-  const load = async () => {
-    const data = await getProducts();
-    setProducts(data || []);
-    setLoading(false);
-    
-  };
-
-  load();
+  setProducts(productsData);
 }, []);
-
-    if (loading) {
-      return <div className="loading">Cargando productos...</div>;
-    }
 
 const [openCart,setOpenCart] = useState(false);
 

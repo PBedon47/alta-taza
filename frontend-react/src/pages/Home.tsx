@@ -30,16 +30,14 @@ function Home(){
 
   // 🔥 lógica del modal
   useEffect(() => {
-
-    const closed = localStorage.getItem("welcomeClosed");
-
-    if (!user && !closed) {
-      setShowWelcome(true);
-    } else {
-      setShowWelcome(false);
-    }
-
-  }, [user]);
+  if (!user) {
+    setShowWelcome(true); // invitado
+  } else if (!user.welcome_seen) {
+    setShowWelcome(true); // usuario nuevo
+  } else {
+    setShowWelcome(false);
+  }
+}, [user]);
 
   return(
 
