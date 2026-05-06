@@ -1,8 +1,8 @@
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-
 import { createOrder } from "../services/api";
+import { useState } from "react";
 
 function Checkout() {
 
@@ -10,34 +10,116 @@ function Checkout() {
   const { user } = useAuth();
   const navigate = useNavigate();
 
- const handlePay = async () => {
+  const [step, setStep] = useState<"resumen" | "form" | "boleta">("resumen");
 
-  if (!user) {
-    navigate("/login");
+  const [formData, setFormData] = useState({
+    direccion: "",
+    metodo_pago: "efectivo"
+  });
+
+  const [orderData, setOrderData] = useState<any>(null);
+
+  const handlePay = () => {
+
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+
+    if (cart.length === 0) {
+      alert("Carrito vacío");
+      return;
+    }
+
+    // 👉 SOLO CAMBIA DE PASO
+    setStep("form");
+  };
+
+  const handleConfirmOrder = async () => {
+
+  if (!formData.direccion) {
+    alert("Ingresa tu dirección");
     return;
-  }
-
-  if (cart.length === 0) {
-    alert("Carrito vacío");
-    return;
-  }
-
-  const currentUser = user;
+  }  
 
   const order = {
-    user_id: currentUser.id,
+    user_id: user?.id || null,
     total: subtotal,
+    direccion: formData.direccion,
+    metodo_pago: formData.metodo_pago,
     items: cart
   };
 
   const res = await createOrder(order);
 
   if (res.id) {
+
     alert("Compra realizada con éxito");
+
+    setOrderData({
+      ...order,
+      fecha: new Date(),
+      user
+    });
+
+    setStep("boleta");
   }
 };
 
+if (step === "form") {
+  return (
+    <div className="checkout-container">
 
+      <h1>Datos de entrega</h1>
+
+      <input
+        placeholder="Dirección"
+        value={formData.direccion}
+        onChange={(e) =>
+          setFormData({ ...formData, direccion: e.target.value })
+        }
+      />
+
+      <select
+        value={formData.metodo_pago}
+        onChange={(e) =>
+          setFormData({ ...formData, metodo_pago: e.target.value })
+        }
+      >
+        <option value="efectivo">Efectivo</option>
+        <option value="yape">Yape</option>
+      </select>
+
+      <button onClick={handleConfirmOrder}>
+        Confirmar compra
+      </button>
+
+    </div>
+  );
+}
+
+if (step === "boleta") {
+  return (
+    <div className="checkout-container">
+
+      <h1>Boleta</h1>
+
+      <p>Cliente: {orderData?.user?.nombre}</p>
+      <p>Dirección: {orderData?.direccion}</p>
+      <p>Pago: {orderData?.metodo_pago}</p>
+      <p>Fecha: {orderData?.fecha?.toString()}</p>
+
+      {orderData?.items?.map((item:any) => (
+        <div key={item.id}>
+          {item.nombre} x {item.quantity}
+        </div>
+      ))}
+
+      <h2>Total: S/ {orderData.total}</h2>
+
+    </div>
+  );
+}
 
   return (
 

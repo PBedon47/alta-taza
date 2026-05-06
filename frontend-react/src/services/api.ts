@@ -38,8 +38,10 @@ export const getProducts = async () => {
 ========================= */
 
 export const createOrder = async (data: {
-  user_id: number;
+  user_id: number | null;
   total: number;
+  direccion: string;
+  metodo_pago: string;
   items: any[];
 }) => {
   const res = await fetch(`${API_URL}/orders`, {
