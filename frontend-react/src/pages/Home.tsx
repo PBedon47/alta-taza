@@ -29,6 +29,7 @@ function Home(){
   } = useCart();
 
   // 🔥 lógica del modal
+
   useEffect(() => {
   if (!user) {
     setShowWelcome(true); // invitado
@@ -38,6 +39,20 @@ function Home(){
     setShowWelcome(false);
   }
 }, [user]);
+
+const handleCloseWelcome = async () => {
+  setShowWelcome(false);
+
+  if (user) {
+    try {
+      await fetch(`http://localhost:3000/api/users/${user.id}/welcome`, {
+        method: "PATCH",
+      });
+    } catch (error) {
+      console.error("Error actualizando welcome:", error);
+    }
+  }
+};
 
   return(
 
@@ -50,12 +65,7 @@ function Home(){
 
       {showWelcome && (
 
-        <WelcomeCard
-          onClose={() => {
-            setShowWelcome(false);
-            localStorage.setItem("welcomeClosed", "true");
-          }}
-        />
+        <WelcomeCard onClose={handleCloseWelcome} />
 
       )}
 
