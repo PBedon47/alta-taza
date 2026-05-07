@@ -1557,3 +1557,134 @@ margin-right:10px;
 .trash-btn:hover{
   background:#6f2f25;
 }
+
+.checkout-form {
+  max-width: 500px;
+  margin: 60px auto;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.checkout-form h1 {
+  margin-bottom: 20px;
+  color: #3b2a24;
+}
+
+.checkout-form input,
+.checkout-form select {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 15px;
+}
+
+.checkout-form button {
+  margin-top: 20px;
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #6b4f4f, #3b2a24);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.checkout-form button:hover {
+  transform: scale(1.03);
+}
+
+/*Boleta*/
+
+.boleta {
+  max-width: 600px;
+  margin: 50px auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.boleta-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.boleta-header h1 {
+  margin: 0;
+  color: #3b2a24;
+}
+
+.boleta-info {
+  margin-bottom: 20px;
+}
+
+.boleta-items {
+  border-top: 1px solid #ddd;
+  margin-top: 15px;
+  padding-top: 10px;
+}
+
+.boleta-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.boleta-total {
+  margin-top: 20px;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: right;
+}
+
+.password-container {
+  position: relative;
+}
+
+.password-container input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+.eye {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  background: url("https://cdn-icons-png.flaticon.com/512/709/709612.png") no-repeat center;
+  background-size: contain;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.eye.open {
+  transform: translateY(-50%) scale(1.2) rotate(10deg);
+  filter: brightness(0.6);
+}
+
+.password-field {
+  position: relative;
+}
+
+.password-field input {
+  width: 100%;
+  padding-right: 40px;
+}
+
+.password-field span {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}

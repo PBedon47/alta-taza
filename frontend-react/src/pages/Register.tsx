@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaCoffee } from "react-icons/fa";
 import { useState } from "react";
 import { registerUser } from "../services/api";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function Register() {
 
@@ -10,6 +11,7 @@ function Register() {
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
     // guardar usuario
 
@@ -59,12 +61,18 @@ function Register() {
           onChange={(e) => setEmail(e.target.value)}
         />
 
-        <input
-          type="password"
-          placeholder="Contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div className="password-field">
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="Contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          <span onClick={() => setShowPassword(!showPassword)}>
+            {showPassword ? <FaEye /> : <FaEyeSlash />}
+          </span>
+        </div>
 
         <button type="button" onClick={handleRegister}>
           Registrarme
