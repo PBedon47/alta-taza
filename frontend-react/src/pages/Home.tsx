@@ -31,27 +31,23 @@ function Home(){
   // 🔥 lógica del modal
 
   useEffect(() => {
-  if (!user) {
-    setShowWelcome(true); // invitado
-  } else if (!user.welcome_seen) {
-    setShowWelcome(true); // usuario nuevo
-  } else {
-    setShowWelcome(false);
-  }
-}, [user]);
 
-const handleCloseWelcome = async () => {
+  if(!user){
+
+    setShowWelcome(true);
+
+  }else{
+
+    setShowWelcome(false);
+
+  }
+
+},[user]);
+
+const handleCloseWelcome = () => {
+
   setShowWelcome(false);
 
-  if (user) {
-    try {
-      await fetch(`http://localhost:3000/api/users/${user.id}/welcome`, {
-        method: "PATCH",
-      });
-    } catch (error) {
-      console.error("Error actualizando welcome:", error);
-    }
-  }
 };
 
   return(
