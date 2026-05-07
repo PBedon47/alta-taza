@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import pool from "../config/db.js";
 
 const productSchema = new mongoose.Schema({
   nombre: String,

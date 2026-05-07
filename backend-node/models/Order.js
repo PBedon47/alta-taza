@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import pool from "../config/db.js";
 
 const orderSchema = new mongoose.Schema({
   userId: String,
