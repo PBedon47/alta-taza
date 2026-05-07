@@ -33,7 +33,14 @@ export const login = async (req, res) => {
       return res.status(400).json({ msg: "Usuario no existe" });
 
     const user = result.rows[0];
+
+    console.log("Password ingresado:", password);      // 👈
+    console.log("Hash en BD:", user.password);
+
+
     const match = await bcrypt.compare(password, user.password);
+
+    console.log("Match resultado:", match); 
 
     if (!match)
       return res.status(400).json({ msg: "Password incorrecto" });
@@ -46,7 +53,7 @@ export const login = async (req, res) => {
 
     res.json({
       token,
-      user: { id: user.id, nombre: user.name, email: user.email }
+      user: { id: user.id, nombre: user.name, email: user.email,welcome_seen: user.welcome_seen }
     });
   } catch (err) {
     res.status(500).json(err.message);
