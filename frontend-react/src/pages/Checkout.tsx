@@ -68,29 +68,54 @@ function Checkout() {
 
 if (step === "form") {
   return (
-    <div className="checkout-container">
+    <div className="checkout-form">
 
       <h1>Datos de entrega</h1>
 
-      <input
-        placeholder="Dirección"
-        value={formData.direccion}
-        onChange={(e) =>
-          setFormData({ ...formData, direccion: e.target.value })
-        }
-      />
+      <div className="form-group">
+        <label>Dirección completa</label>
 
-      <select
-        value={formData.metodo_pago}
-        onChange={(e) =>
-          setFormData({ ...formData, metodo_pago: e.target.value })
-        }
+        <input
+          value={formData.direccion}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              direccion: e.target.value
+            })
+          }
+        />
+      </div>
+
+      <div className="form-group">
+
+        <label>Método de pago</label>
+
+        <select
+          value={formData.metodo_pago}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              metodo_pago: e.target.value
+            })
+          }
+        >
+
+          <option value="efectivo">
+            Efectivo
+          </option>
+
+          <option value="yape">
+            Yape
+          </option>
+
+        </select>
+
+      </div>
+
+      <button
+        className="confirm-btn"
+        onClick={handleConfirmOrder}
       >
-        <option value="efectivo">Efectivo</option>
-        <option value="yape">Yape</option>
-      </select>
-
-      <button onClick={handleConfirmOrder}>
         Confirmar compra
       </button>
 
@@ -100,22 +125,41 @@ if (step === "form") {
 
 if (step === "boleta") {
   return (
-    <div className="checkout-container">
+    <div className="boleta">
 
-      <h1>Boleta</h1>
+      <div className="boleta-header">
+        <h1>Alta Taza</h1>
+        <p>Boleta de compra</p>
+      </div>
 
-      <p>Cliente: {orderData?.user?.nombre}</p>
-      <p>Dirección: {orderData?.direccion}</p>
-      <p>Pago: {orderData?.metodo_pago}</p>
-      <p>Fecha: {orderData?.fecha?.toString()}</p>
+      <div className="boleta-info">
+        <p><strong>Cliente:</strong> {orderData?.user?.nombre}</p>
+        <p><strong>Dirección:</strong> {orderData?.direccion}</p>
+        <p>
+          <strong>Método de pago:</strong>{" "}
+          {orderData?.metodo_pago === "yape"
+            ? "Yape"
+            : "Efectivo"}
+        </p>
+        <p>
+            <strong>Fecha:</strong>{" "}
+            {new Date(orderData?.fecha).toLocaleString()}
+          </p>
+      </div>
 
-      {orderData?.items?.map((item:any) => (
-        <div key={item.id}>
-          {item.nombre} x {item.quantity}
-        </div>
-      ))}
+      <div className="boleta-items">
+        {orderData?.items?.map((item:any) => (
+          <div className="boleta-item" key={item.id}>
+            <span>{item.nombre} x {item.quantity || item.cantidad}</span>
+            <span>S/ {item.precio * (item.quantity || item.cantidad)}</span>
+          </div>
+        ))}
+      </div>
 
-      <h2>Total: S/ {orderData.total}</h2>
+      <div className="boleta-total">
+      <span>Total pagado</span>
+      <strong>S/ {Number(orderData.total).toFixed(2)}</strong>
+    </div>
 
     </div>
   );

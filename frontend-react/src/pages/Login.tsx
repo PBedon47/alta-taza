@@ -3,6 +3,7 @@ import { FaCoffee } from "react-icons/fa";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { loginUser } from "../services/api";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function Login() {
 
@@ -10,6 +11,7 @@ function Login() {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleLogin = async () => {
     const res = await loginUser({ email, password });
@@ -48,12 +50,18 @@ function Login() {
           onChange={(e) => setEmail(e.target.value)}
         />
 
+        <div className="password-field">
         <input
-          type="password"
+          type={showPassword ? "text" : "password"}
           placeholder="Contraseña"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+
+        <span onClick={() => setShowPassword(!showPassword)}>
+          {showPassword ? <FaEye /> : <FaEyeSlash />}
+        </span>
+      </div>
 
         <button type="button" onClick={handleLogin}>
           Iniciar sesión
